@@ -1,0 +1,55 @@
+MIT License
+
+Copyright (c) 2025 Cyesuta
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+MIT 授權條款
+
+版權所有 (c) 2025 Cyesuta
+
+茲此免費授予任何取得本軟體及相關文檔檔案（以下稱「本軟體」）副本的人，
+不受限制地處理本軟體的權利，包括但不限於使用、複製、修改、合併、發布、
+分發、再授權和/或銷售本軟體副本的權利，以及允許本軟體提供給其使用者
+依照上述方式行事的權利，但須符合以下條件：
+
+上述版權聲明和本許可聲明應包含在本軟體的所有副本或重要部分中。
+
+本軟體以「現況」提供，不提供任何形式的明示或暗示保證，包括但不限於
+適銷性保證、特定用途適用性保證和非侵權保證。在任何情況下，作者或
+版權持有人均不對因本軟體或使用或其他處理本軟體而產生的任何索賠、
+損害或其他責任負責，無論是在合約訴訟、侵權訴訟或其他訴訟中。
+
+---
+
+Note on Dependencies / 依賴項目說明:
+
+This project uses the following technologies that are subject to their own licenses:
+本專案使用以下技術，這些技術受其各自的授權條款約束：
+
+- AutoCAD .NET API - Subject to Autodesk's terms and conditions
+  AutoCAD .NET API - 受 Autodesk 條款和條件約束
+  
+- .NET Framework and .NET Runtime - Subject to Microsoft's licenses
+  .NET Framework 和 .NET Runtime - 受 Microsoft 授權條款約束
+
+Users must ensure they have proper licenses for AutoCAD and comply with all applicable terms.
+使用者必須確保擁有 AutoCAD 的合法授權並遵守所有適用條款。

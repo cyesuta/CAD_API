@@ -1,59 +1,59 @@
-# CAD_API 專案建構指南 - 給 LLM 的完整 Prompt
+# CAD_API Build Guide - Complete Prompt for LLMs
 
-如果你想使用 Claude Code 或其他 LLM 輔助生成類似的 AutoCAD 控制工具，以下是完整的 prompt：
+If you want to use Claude Code or other LLMs to generate a similar AutoCAD control tool, here's the complete prompt:
 
 ---
 
-## 完整 Prompt
+## Complete Prompt
 
-我需要你幫我建立一個 CAD_API 工具，用來通過程式控制 AutoCAD 進行繪圖操作。請注意以下關鍵要求和實施細節：
+I need you to help me build a CAD_API tool to control AutoCAD drawing operations programmatically. Please note the following key requirements and implementation details:
 
-### 核心需求
-1. **必須使用 AutoCAD .NET API**，不要使用 COM 方式
-2. 目標環境是 **AutoCAD 2023**，使用 **.NET Framework 4.8**
-3. 需要支援從外部程式發送命令到 AutoCAD 執行
-4. 實現 DRAW LINE 命令，格式：`DRAW LINE 起點X,起點Y 長度 方向`
-5. 方向支援 HORIZONTAL 和 VERTICAL，長度支援負值（反向繪製）
+### Core Requirements
+1. **Must use AutoCAD .NET API**, not COM approach
+2. Target environment is **AutoCAD 2023**, using **.NET Framework 4.8**
+3. Need to support sending commands from external programs to AutoCAD for execution
+4. Implement DRAW LINE command, format: `DRAW LINE StartX,StartY Length Direction`
+5. Direction supports HORIZONTAL and VERTICAL, length supports negative values (reverse drawing)
 
-### 專案架構
-請建立以下結構：
+### Project Structure
+Please create the following structure:
 ```
 CAD_API/
 ├── src/
-│   ├── CAD_API.Plugin/      # AutoCAD 插件 (.NET Framework 4.8)
-│   ├── CAD_API.CLI/         # CLI 客戶端 (.NET 6.0)
-│   └── CAD_API.sln          # Visual Studio 解決方案
-├── draw/                     # PowerShell 繪圖腳本
-├── commands.txt             # 命令文件（FileWatcher 監視）
-└── 文檔檔案
+│   ├── CAD_API.Plugin/      # AutoCAD plugin (.NET Framework 4.8)
+│   ├── CAD_API.CLI/         # CLI client (.NET 6.0)
+│   └── CAD_API.sln          # Visual Studio solution
+├── draw/                     # PowerShell drawing scripts
+├── commands.txt             # Command file (monitored by FileWatcher)
+└── documentation files
 ```
 
-### 技術實現要點
+### Technical Implementation Points
 
-#### 1. AutoCAD 插件部分 (CAD_API.Plugin)
-創建一個 AutoCAD .NET 插件，包含：
+#### 1. AutoCAD Plugin Part (CAD_API.Plugin)
+Create an AutoCAD .NET plugin containing:
 
-**CADCommands.cs** - 主要命令類：
-- 使用 `[CommandMethod("CADAPI_WATCH")]` 註冊命令
-- 實現 FileWatcher 監視 commands.txt 文件變化
-- 當文件變化時，讀取內容並執行命令
-- 實現 `ParseAndExecuteCommand` 方法解析 DRAW LINE 命令
-- 使用 Transaction 進行 AutoCAD 繪圖操作
+**CADCommands.cs** - Main command class:
+- Register commands using `[CommandMethod("CADAPI_WATCH")]`
+- Implement FileWatcher to monitor commands.txt file changes
+- When file changes, read content and execute commands
+- Implement `ParseAndExecuteCommand` method to parse DRAW LINE commands
+- Use Transaction for AutoCAD drawing operations
 
-**FileWatcher.cs** - 文件監視器：
-- 使用 `FileSystemWatcher` 監視 commands.txt
-- 設定 `NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size`
-- 文件變化後延遲 100ms 再讀取（確保寫入完成）
-- 讀取後立即清空文件內容
-- 使用 `SendStringToExecute` 在 AutoCAD 主線程執行命令
+**FileWatcher.cs** - File watcher:
+- Use `FileSystemWatcher` to monitor commands.txt
+- Set `NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.Size`
+- Delay 100ms after file change before reading (ensure write completion)
+- Clear file content immediately after reading
+- Use `SendStringToExecute` to execute commands on AutoCAD main thread
 
-**重要細節**：
-- DLL 名稱使用版本號（如 CAD_API.Plugin.v3.dll）避免鎖定問題
-- 引用 AcCoreMgd.dll、AcDbMgd.dll、AcMgd.dll
-- 設定引用的 Copy Local = False
+**Important Details**:
+- Use version numbers in DLL names (e.g., CAD_API.Plugin.v3.dll) to avoid locking issues
+- Reference AcCoreMgd.dll, AcDbMgd.dll, AcMgd.dll
+- Set reference Copy Local = False
 
-#### 2. CLI 客戶端部分 (CAD_API.CLI)
-**SimpleClient.cs**：
+#### 2. CLI Client Part (CAD_API.CLI)
+**SimpleClient.cs**:
 ```csharp
 public void SendCommand(string command)
 {
@@ -61,14 +61,14 @@ public void SendCommand(string command)
     Thread.Sleep(500);
 }
 ```
-- 使用 `File.WriteAllText` 寫入（重要！不能用其他方式）
-- 寫入後等待 500ms
+- Use `File.WriteAllText` for writing (Important! Cannot use other methods)
+- Wait 500ms after writing
 
-#### 3. PowerShell 腳本部分
-創建執行腳本時要注意：
-- **每個命令必須間隔至少 1 秒**（這是關鍵！）
-- 使用 CLI.exe 寫入命令，不要直接寫文件
-- 範例腳本結構：
+#### 3. PowerShell Script Part
+When creating execution scripts, note:
+- **Each command must be spaced at least 1 second apart** (This is critical!)
+- Use CLI.exe to write commands, don't write files directly
+- Example script structure:
 ```powershell
 $cliPath = "$PSScriptRoot\..\src\CAD_API.CLI\bin\Debug\net6.0\CAD_API.CLI.exe"
 $commands = @(
@@ -80,100 +80,100 @@ foreach ($cmd in $commands) {
     "$cmd`nEXIT" | Out-File -FilePath $tempFile -Encoding ASCII
     Start-Process -FilePath $cliPath -RedirectStandardInput $tempFile -Wait -NoNewWindow
     Remove-Item $tempFile
-    Start-Sleep -Seconds 1  # 關鍵延遲！
+    Start-Sleep -Seconds 1  # Critical delay!
 }
 ```
 
-### 命令解析邏輯
-DRAW LINE 命令解析：
+### Command Parsing Logic
+DRAW LINE command parsing:
 ```csharp
-// 格式：DRAW LINE startX,startY length direction
-// 範例：DRAW LINE 0,0 1000 HORIZONTAL
+// Format: DRAW LINE startX,startY length direction
+// Example: DRAW LINE 0,0 1000 HORIZONTAL
 switch (direction.ToUpper()) {
     case "HORIZONTAL":
     case "H":
-        endX = startX + length;  // 支援負值
+        endX = startX + length;  // Supports negative values
         endY = startY;
         break;
     case "VERTICAL": 
     case "V":
         endX = startX;
-        endY = startY + length;  // 支援負值
+        endY = startY + length;  // Supports negative values
         break;
 }
 ```
 
-### 關鍵問題和解決方案
+### Key Issues and Solutions
 
-1. **FileWatcher 不觸發問題**
-   - 必須使用 CLI.exe 的 File.WriteAllText
-   - PowerShell Out-File 不會正確觸發 FileSystemWatcher
+1. **FileWatcher Not Triggering**
+   - Must use CLI.exe's File.WriteAllText
+   - PowerShell Out-File won't trigger FileSystemWatcher correctly
    
-2. **命令執行不完整問題**
-   - 命令間隔必須至少 1 秒
-   - FileWatcher 內部延遲 + 文件操作需要時間
+2. **Incomplete Command Execution**
+   - Commands must be spaced at least 1 second apart
+   - FileWatcher internal delay + file operations need time
    
-3. **DLL 鎖定問題**
-   - 使用版本號命名 DLL（v2, v3, v4）
-   - AutoCAD 載入後無法覆蓋，需要新版本號
+3. **DLL Locking Issue**
+   - Use version numbers in DLL names (v2, v3, v4)
+   - Cannot overwrite after AutoCAD loads, need new version number
 
-### 重要失敗經驗 - 絕對不要這樣做！
+### Important Failed Experiences - Never Do These!
 
-#### ❌ 錯誤方法 1：使用 COM 接口
+#### ❌ Wrong Approach 1: Using COM Interface
 ```csharp
-// 不要這樣做！
+// Don't do this!
 Type acType = Type.GetTypeFromProgID("AutoCAD.Application");
 dynamic acApp = Activator.CreateInstance(acType);
 ```
-**為什麼失敗**：
-- 用戶明確要求使用 .NET API
-- COM 方式效能較差且不穩定
-- 需要處理複雜的 COM 釋放問題
+**Why it fails**:
+- User explicitly requested .NET API usage
+- COM approach has poor performance and is unstable
+- Requires handling complex COM release issues
 
-#### ❌ 錯誤方法 2：使用命名管道通信
+#### ❌ Wrong Approach 2: Using Named Pipes
 ```csharp
-// 不要這樣做！
+// Don't do this!
 var server = new NamedPipeServerStream("AutoCADPipe");
 ```
-**為什麼失敗**：
-- AutoCAD 插件環境下命名管道容易出現權限問題
-- 跨進程通信複雜度高
-- 調試困難
+**Why it fails**:
+- Named pipes prone to permission issues in AutoCAD plugin environment
+- High complexity for cross-process communication
+- Difficult to debug
 
-#### ❌ 錯誤方法 3：直接用 PowerShell 寫文件
+#### ❌ Wrong Approach 3: Direct PowerShell File Writing
 ```powershell
-# 不要這樣做！
+# Don't do this!
 "DRAW LINE 0,0 1000 HORIZONTAL" | Out-File commands.txt
 Set-Content commands.txt "DRAW LINE 0,0 1000 HORIZONTAL"
 ```
-**為什麼失敗**：
-- Out-File 和 Set-Content 不會觸發 FileSystemWatcher
-- 文件寫入方式不產生正確的系統事件
+**Why it fails**:
+- Out-File and Set-Content won't trigger FileSystemWatcher
+- File writing method doesn't generate correct system events
 
-#### ❌ 錯誤方法 4：批量發送命令
+#### ❌ Wrong Approach 4: Batch Command Sending
 ```powershell
-# 不要這樣做！
+# Don't do this!
 $allCommands = $commands -join "`n"
 $allCommands | Out-File $tempFile
 ```
-**為什麼失敗**：
-- FileWatcher 處理速度有限
-- 批量命令會相互覆蓋
-- 導致繪圖不完整（如正方形缺邊）
+**Why it fails**:
+- FileWatcher processing speed is limited
+- Batch commands overwrite each other
+- Results in incomplete drawings (e.g., squares missing edges)
 
-#### ❌ 錯誤方法 5：過短的延遲時間
+#### ❌ Wrong Approach 5: Too Short Delay Time
 ```powershell
-# 不要這樣做！
-Start-Sleep -Milliseconds 500  # 太短！
+# Don't do this!
+Start-Sleep -Milliseconds 500  # Too short!
 ```
-**為什麼失敗**：
-- 0.5 秒延遲會導致命令遺失
-- FileWatcher 需要約 400-500ms 完成一個循環
-- 必須使用 1 秒延遲確保穩定
+**Why it fails**:
+- 0.5 second delay causes command loss
+- FileWatcher needs about 400-500ms to complete one cycle
+- Must use 1 second delay for stability
 
-#### ❌ 錯誤方法 6：忘記 assembly 級別的 CommandClass 屬性
+#### ❌ Wrong Approach 6: Forgetting Assembly-Level CommandClass Attribute
 ```csharp
-// 不要忘記在檔案頂部加入這行！
+// Don't forget to add this line at the top of the file!
 // [assembly: CommandClass(typeof(CAD_API.Plugin.CADCommands))]
 
 namespace CAD_API.Plugin
@@ -185,73 +185,73 @@ namespace CAD_API.Plugin
     }
 }
 ```
-**為什麼失敗**：
-- 缺少 assembly 級別的 CommandClass 屬性註冊
-- 即使有 CommandMethod 屬性，命令也不會在 AutoCAD 中出現
-- 這是 AutoCAD .NET API 的特殊要求
+**Why it fails**:
+- Missing assembly-level CommandClass attribute registration
+- Commands won't appear in AutoCAD even with CommandMethod attribute
+- This is a special requirement of AutoCAD .NET API
 
-#### ❌ 錯誤方法 7：錯誤的坐標計算
+#### ❌ Wrong Approach 7: Wrong Coordinate Calculation
 ```csharp
-// 不要這樣做！
-// 以為是終點坐標
-endX = length;  // 錯誤！
-endY = length;  // 錯誤！
+// Don't do this!
+// Thinking it's endpoint coordinates
+endX = length;  // Wrong!
+endY = length;  // Wrong!
 ```
-**為什麼失敗**：
-- 命令格式是「長度+方向」，不是終點坐標
-- 必須根據起點和方向計算終點
+**Why it fails**:
+- Command format is "length+direction", not endpoint coordinates
+- Must calculate endpoint based on start point and direction
 
-### 正確做法總結
+### Correct Approach Summary
 
-✅ **使用 .NET API + FileWatcher**
-✅ **通過 CLI.exe 使用 File.WriteAllText**
-✅ **每個命令間隔 1 秒**
-✅ **使用版本號管理 DLL**
-✅ **單條命令逐一執行**
-✅ **正確計算終點坐標**
+✅ **Use .NET API + FileWatcher**
+✅ **Use File.WriteAllText through CLI.exe**
+✅ **1 second interval between commands**
+✅ **Version number management for DLLs**
+✅ **Execute commands one by one**
+✅ **Calculate endpoint coordinates correctly**
 
-### 測試步驟
-1. 在 AutoCAD 中：`NETLOAD` 載入插件
-2. 執行：`CADAPI_WATCH` 啟動監視器
-3. 運行 PowerShell 腳本繪製圖形
-4. 驗證是否繪製出完整的圖形
+### Testing Steps
+1. In AutoCAD: `NETLOAD` to load plugin
+2. Execute: `CADAPI_WATCH` to start monitor
+3. Run PowerShell script to draw graphics
+4. Verify complete graphics are drawn
 
-### 預期結果
-- 能夠從外部程式控制 AutoCAD 繪圖
-- 支援繪製直線（水平、垂直、反向）
-- 命令執行穩定可靠
-- 支援批量繪圖腳本
+### Expected Results
+- Able to control AutoCAD drawing from external programs
+- Support drawing lines (horizontal, vertical, reverse)
+- Stable and reliable command execution
+- Support batch drawing scripts
 
-### 重要提醒
-1. 不要使用 COM 方式，必須用 .NET API
-2. 不要使用命名管道或 Socket，使用文件監視
-3. 命令間隔 1 秒是必須的，不是可選的
-4. 使用 Transaction 確保 AutoCAD 操作的原子性
+### Important Reminders
+1. Don't use COM approach, must use .NET API
+2. Don't use named pipes or sockets, use file monitoring
+3. 1-second command interval is mandatory, not optional
+4. Use Transaction to ensure atomicity of AutoCAD operations
 
 ---
 
-## 使用此 Prompt 的建議
+## Suggestions for Using This Prompt
 
-1. **分階段實施**：先實現基本插件加載，再加入 FileWatcher，最後完善命令解析
-2. **持續測試**：每個功能完成後立即在 AutoCAD 中測試
-3. **保留版本**：使用版本號避免 DLL 鎖定問題
-4. **文檔記錄**：記錄每個嘗試和解決方案，方便回溯
+1. **Phased Implementation**: First implement basic plugin loading, then add FileWatcher, finally refine command parsing
+2. **Continuous Testing**: Test in AutoCAD immediately after each feature completion
+3. **Preserve Versions**: Use version numbers to avoid DLL locking issues
+4. **Document Everything**: Record each attempt and solution for easy backtracking
 
-## 額外功能擴展建議
+## Additional Feature Extension Suggestions
 
-如果要擴展功能，可以考慮：
-1. 支援更多圖形類型（CIRCLE, ARC, TEXT）
-2. 支援顏色和圖層設定
-3. 實現相對坐標系統
-4. 添加錯誤處理和日誌
-5. 支援批量命令執行優化
+For feature extensions, consider:
+1. Support more graphic types (CIRCLE, ARC, TEXT)
+2. Support color and layer settings
+3. Implement relative coordinate system
+4. Add error handling and logging
+5. Support batch command execution optimization
 
-## 成功標準
+## Success Criteria
 
-當你能夠：
-1. 從外部程式發送命令到 AutoCAD
-2. 繪製出完整的圖形（如正方形）
-3. 命令執行穩定不遺漏
-4. 支援複雜的繪圖腳本
+When you can:
+1. Send commands from external programs to AutoCAD
+2. Draw complete graphics (e.g., squares)
+3. Execute commands stably without loss
+4. Support complex drawing scripts
 
-即表示工具開發成功！
+The tool development is successful!

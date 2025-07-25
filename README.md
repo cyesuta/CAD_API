@@ -1,8 +1,173 @@
+# CAD_API - AutoCAD .NET API Control Tool
+
+## Project Overview
+
+CAD_API is a control tool developed using the AutoCAD .NET API that enables external programs to control AutoCAD drawing operations through a file monitoring mechanism.
+
+The motivation behind this project was to enable real-time control of AutoCAD using Claude Code. The COM-based approach proved unstable and occasionally failed to capture the AutoCAD process, so I switched to the .NET approach.
+
+This project is still in its early stages. My goal is to create architectural floor plans using natural language (a dream). Updates are irregular, and new features are added as needed. Feel free to use it, and I'd be happy to receive feedback!
+
+## Core Features
+
+- ✅ Uses AutoCAD .NET API (not COM)
+- ✅ File monitoring mechanism (FileWatcher)
+- ✅ Supports batch drawing scripts
+- ✅ Command execution interval control (1-second delay)
+- ✅ Fully relative paths, can run from any location
+
+## System Architecture
+
+```
+┌─────────────────────────────────────────────────────┐
+│          PowerShell Scripts / User Input            │
+└─────────────────────┬───────────────────────────────┘
+                      ↓
+┌─────────────────────────────────────────────────────┐
+│               CAD_API.CLI.exe                       │
+│         (Writes commands to commands.txt)           │
+└─────────────────────┬───────────────────────────────┘
+                      ↓
+┌─────────────────────────────────────────────────────┐
+│                commands.txt                         │
+│         (FileWatcher monitors this file)            │
+└─────────────────────┬───────────────────────────────┘
+                      ↓
+┌─────────────────────────────────────────────────────┐
+│           CAD_API.Plugin.v3.dll                     │
+│   (AutoCAD Plugin - FileWatcher + Command Parser)  │
+└─────────────────────┬───────────────────────────────┘
+                      ↓
+┌─────────────────────────────────────────────────────┐
+│              AutoCAD 2023                           │
+│           (Executes drawing commands)               │
+└─────────────────────────────────────────────────────┘
+```
+
+## Quick Start
+
+### 1. Load Plugin
+In AutoCAD 2023:
+```
+NETLOAD
+```
+Select: `{CAD_API_Root}\src\CAD_API.Plugin\bin\Debug\net48\CAD_API.Plugin.v3.dll`
+
+### 2. Start Monitor
+```
+CADAPI_WATCH
+```
+
+### 3. Execute Drawing
+```bash
+cd {CAD_API_Root}
+powershell -ExecutionPolicy Bypass -File draw\draw_three_squares_delay.ps1
+```
+
+## Project Structure
+
+```
+CAD_API/
+├── README.md                    # This file
+├── CHANGELOG.md                 # Development history
+├── TOOLS.md                     # Tool details
+├── build.md                     # LLM development guide
+├── commands.txt                 # Command file (auto-generated)
+│
+├── src/                         # Source code
+│   ├── CAD_API.Plugin/         # AutoCAD plugin (.NET Framework 4.8)
+│   │   ├── CADCommands.cs      # Main command implementation
+│   │   ├── FileWatcher.cs      # File watcher
+│   │   └── bin/Debug/net48/
+│   │       └── CAD_API.Plugin.v3.dll  # ⭐ Required: AutoCAD plugin
+│   └── CAD_API.CLI/            # CLI client (.NET 6.0)
+│       ├── Program.cs          # Main program
+│       ├── SimpleClient.cs     # Command sender
+│       └── bin/Debug/net6.0/
+│           └── CAD_API.CLI.exe        # ⭐ Required: CLI executable
+│
+├── draw/                        # PowerShell drawing scripts
+│   ├── draw_three_squares_delay.ps1  # ⭐ Required: Drawing script example
+│   ├── draw_template.ps1            # Script template
+│   └── README.md                    # Script documentation
+│
+└── docs/                        # Documentation
+    ├── Complete_User_Guide.md   # Complete user guide (English)
+    ├── 完整使用指南.md          # Complete user guide (Chinese)
+    ├── build.md                 # LLM development guide
+    └── README.md                # Documentation index
+```
+
+### Minimal Files Required (marked with ⭐)
+
+If you only want to use the functionality without source code, you need at minimum:
+
+```
+CAD_API_Minimal/
+├── CAD_API.Plugin.v3.dll       # ⭐ From src\CAD_API.Plugin\bin\Debug\net48\
+├── CLI/                         # ⭐ From src\CAD_API.CLI\bin\Debug\net6.0\
+│   ├── CAD_API.CLI.exe
+│   ├── CAD_API.CLI.dll
+│   ├── CAD_API.CLI.deps.json
+│   └── CAD_API.CLI.runtimeconfig.json
+├── draw_three_squares_delay.ps1 # ⭐ From draw\ folder
+└── Quick_Start.txt
+```
+
+**Total Size**: ~1MB
+
+**Requirements**:
+- AutoCAD 2023
+- .NET 6.0 Runtime ([Download](https://dotnet.microsoft.com/download/dotnet/6.0))
+- Windows PowerShell (built-in)
+
+## Supported AutoCAD Commands
+
+See [Complete User Guide](docs/Complete_User_Guide.md#autocad-command-list) for all supported commands.
+
+## Important Notes
+
+See [Complete User Guide](docs/Complete_User_Guide.md#why-1-second-delay-is-needed) for detailed notes.
+
+## System Requirements
+
+- AutoCAD 2023
+- .NET Framework 4.8
+- .NET 6.0 SDK (for CLI)
+- Windows PowerShell
+
+## Related Documentation
+
+- **[TOOLS.md](TOOLS.md)** - Technical implementation details
+- **[CHANGELOG.md](CHANGELOG.md)** - Development history
+- **[build.md](build.md)** - Guide for recreating this project with LLM
+- **[docs/Complete_User_Guide.md](docs/Complete_User_Guide.md)** - Detailed usage guide
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+### Dependencies
+- Requires AutoCAD 2023 (valid license required)
+- Requires .NET Framework 4.8 and .NET 6.0 Runtime
+- Use of AutoCAD API is subject to Autodesk's terms and conditions
+
+## Contributing and Support
+
+- Report issues: [GitHub Issues](https://github.com/yourorg/CAD_API/issues)
+- **LLM Development Guide**: [build.md](./build.md) - Complete prompts for recreating this tool with Claude Code
+
+---
+
 # CAD_API - AutoCAD .NET API 控制工具
 
 ## 專案概述
 
-CAD_API 是一個使用 AutoCAD .NET API 開發的控制工具，透過文件監視機制實現從外部程式控制 AutoCAD 進行繪圖操作。與傳統的 COM 方式不同，本工具採用 .NET 插件方式，提供更高效、更穩定的整合方案。
+CAD_API 是一個使用 AutoCAD .NET API 開發的控制工具，透過文件監視機制實現從外部程式控制 AutoCAD 進行繪圖操作。
+
+這個專案的緣由是我想使用 Claude Code 直接實時控制 AutoCAD，但因為 COM 的調用方式不夠穩定、偶爾抓不到 AutoCAD 進程。所以改用 .NET 的方式。
+
+現在這個專案功能還非常初始，我的目標是可以用自然語言畫建築平面圖（夢想）。更新時間不定、更新功能不定。歡迎拿去用，如果能給我意見我會很開心。
 
 ## 核心特性
 
@@ -88,9 +253,10 @@ CAD_API/
 │   └── README.md                    # 腳本說明
 │
 └── docs/                        # 文檔資料
-    ├── 使用指南.md             # 完整使用指南（整合版）
-    ├── CLI使用說明.md          # CLI 工具說明（整合版）
-    └── README.md               # 文檔索引
+    ├── Complete_User_Guide.md   # 完整使用指南（英文版）
+    ├── 完整使用指南.md          # 完整使用指南（中文版）
+    ├── build.md                 # LLM 開發指南
+    └── README.md                # 文檔索引
 ```
 
 ### 最小使用單位（標註 ⭐ 的檔案）
@@ -136,11 +302,17 @@ CAD_API_最小版本/
 - **[TOOLS.md](TOOLS.md)** - 工具技術詳解
 - **[CHANGELOG.md](CHANGELOG.md)** - 開發歷史記錄
 - **[build.md](build.md)** - 使用 LLM 重現此專案的指南
-- **[docs/使用指南.md](docs/使用指南.md)** - 詳細使用說明
+- **[docs/完整使用指南.md](docs/完整使用指南.md)** - 詳細使用說明（中文版）
+- **[docs/Complete_User_Guide.md](docs/Complete_User_Guide.md)** - Detailed usage guide (English)
 
 ## 許可證
 
-本專案採用 MIT 許可證。
+本專案採用 MIT 許可證 - 詳見 [LICENSE](LICENSE) 文件。
+
+### 依賴項目
+- 需要 AutoCAD 2023（需要有效授權）
+- 需要 .NET Framework 4.8 和 .NET 6.0 Runtime
+- AutoCAD API 的使用需遵守 Autodesk 的條款
 
 ## 貢獻與支援
 
