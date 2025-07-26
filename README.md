@@ -71,7 +71,6 @@ CAD_API/
 ├── README.md                    # This file
 ├── CHANGELOG.md                 # Development history
 ├── TOOLS.md                     # Tool details
-├── build.md                     # LLM development guide
 ├── commands.txt                 # Command file (auto-generated)
 │
 ├── src/                         # Source code
@@ -140,7 +139,7 @@ See [Complete User Guide](docs/Complete_User_Guide.md#why-1-second-delay-is-need
 
 - **[TOOLS.md](TOOLS.md)** - Technical implementation details
 - **[CHANGELOG.md](CHANGELOG.md)** - Development history
-- **[build.md](build.md)** - Guide for recreating this project with LLM
+- **[build.md](docs/build.md)** - Guide for recreating this project with LLM
 - **[docs/Complete_User_Guide.md](docs/Complete_User_Guide.md)** - Detailed usage guide
 
 ## License
@@ -154,8 +153,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Contributing and Support
 
-- Report issues: [GitHub Issues](https://github.com/yourorg/CAD_API/issues)
-- **LLM Development Guide**: [build.md](./build.md) - Complete prompts for recreating this tool with Claude Code
+- Report issues: [GitHub Issues](https://github.com/cyesuta/CAD_API/issues)
+- Contributing: [Contributing Guide](.github/CONTRIBUTING.md)
+- **LLM Development Guide**: [build.md](docs/build.md) - Complete prompts for recreating this tool with Claude Code
 
 ---
 
@@ -232,7 +232,6 @@ CAD_API/
 ├── README.md                    # 本文件
 ├── CHANGELOG.md                 # 開發歷史
 ├── TOOLS.md                     # 工具詳細說明
-├── build.md                     # LLM 開發指南
 ├── commands.txt                 # 命令檔案（自動生成）
 │
 ├── src/                         # 源代碼
@@ -301,7 +300,7 @@ CAD_API_最小版本/
 
 - **[TOOLS.md](TOOLS.md)** - 工具技術詳解
 - **[CHANGELOG.md](CHANGELOG.md)** - 開發歷史記錄
-- **[build.md](build.md)** - 使用 LLM 重現此專案的指南
+- **[build.md](docs/build.md)** - 使用 LLM 重現此專案的指南
 - **[docs/完整使用指南.md](docs/完整使用指南.md)** - 詳細使用說明（中文版）
 - **[docs/Complete_User_Guide.md](docs/Complete_User_Guide.md)** - Detailed usage guide (English)
 
@@ -316,5 +315,6 @@ CAD_API_最小版本/
 
 ## 貢獻與支援
 
-- 問題回報：[GitHub Issues](https://github.com/yourorg/CAD_API/issues)
-- **LLM 開發指南**：[build.md](./build.md) - 使用 Claude Code 重現此工具的完整 prompt
+- 問題回報：[GitHub Issues](https://github.com/cyesuta/CAD_API/issues)
+- 貢獻指南：[Contributing Guide](.github/CONTRIBUTING.md)
+- **LLM 開發指南**：[build.md](docs/build.md) - 使用 Claude Code 重現此工具的完整 prompt
