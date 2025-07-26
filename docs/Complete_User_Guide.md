@@ -61,7 +61,7 @@ Please refer to [README.md](../README.md#system-requirements) for detailed syste
 ### 3 Steps to Get Started
 
 #### Step 1: Load Plugin
-In AutoCAD 2023 command line:
+In AutoCAD command line:
 ```
 NETLOAD
 ```

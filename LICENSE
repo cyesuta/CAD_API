@@ -2,6 +2,19 @@ MIT License
 
 Copyright (c) 2025 Cyesuta
 
+## Project Description / 專案說明
+
+CAD_API is a .NET library that provides helpful tools and extensions for working with the AutoCAD® API.
+CAD_API 是一個 .NET 函式庫，為使用 AutoCAD® API 提供了方便的工具和擴充功能。
+
+## Important Notice / 重要聲明
+
+This plugin is not affiliated with, sponsored, or endorsed by Autodesk, Inc.
+此插件與 Autodesk, Inc. 無任何關聯，亦未獲其贊助或認可。
+
+AutoCAD® is a registered trademark of Autodesk, Inc.
+AutoCAD® 是 Autodesk, Inc. 的註冊商標。
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -20,6 +33,21 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+## DISCLAIMER OF WARRANTY / 免責聲明
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS
+OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
+THIS SOFTWARE.
+
+本軟體按「現況」提供，作者不承擔與本軟體相關的所有保證，包括所有適銷性和
+適用性的默示保證。在任何情況下，作者均不對任何特殊、直接、間接或後果性損害，
+或因使用、數據或利潤損失而產生的任何損害負責，無論是在合約訴訟、疏忽或其他
+侵權行為中，因使用或執行本軟體而產生的或與之相關的。
+
 ---
 
 MIT 授權條款
@@ -37,6 +65,13 @@ MIT 授權條款
 適銷性保證、特定用途適用性保證和非侵權保證。在任何情況下，作者或
 版權持有人均不對因本軟體或使用或其他處理本軟體而產生的任何索賠、
 損害或其他責任負責，無論是在合約訴訟、侵權訴訟或其他訴訟中。
+
+## 免責聲明
+
+本軟體按「現況」提供，作者不承擔與本軟體相關的所有保證，包括所有適銷性和
+適用性的默示保證。在任何情況下，作者均不對任何特殊、直接、間接或後果性損害，
+或因使用、數據或利潤損失而產生的任何損害負責，無論是在合約訴訟、疏忽或其他
+侵權行為中，因使用或執行本軟體而產生的或與之相關的。
 
 ---
 

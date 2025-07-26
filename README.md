@@ -39,7 +39,7 @@ This project is still in its early stages. My goal is to create architectural fl
 └─────────────────────┬───────────────────────────────┘
                       ↓
 ┌─────────────────────────────────────────────────────┐
-│              AutoCAD 2023                           │
+│                   AutoCAD                           │
 │           (Executes drawing commands)               │
 └─────────────────────────────────────────────────────┘
 ```
@@ -47,7 +47,7 @@ This project is still in its early stages. My goal is to create architectural fl
 ## Quick Start
 
 ### 1. Load Plugin
-In AutoCAD 2023:
+In AutoCAD:
 ```
 NETLOAD
 ```
@@ -116,7 +116,7 @@ CAD_API_Minimal/
 **Total Size**: ~1MB
 
 **Requirements**:
-- AutoCAD 2023
+- AutoCAD (tested on 2023, other versions welcome to test)
 - .NET 6.0 Runtime ([Download](https://dotnet.microsoft.com/download/dotnet/6.0))
 - Windows PowerShell (built-in)
 
@@ -130,7 +130,7 @@ See [Complete User Guide](docs/Complete_User_Guide.md#why-1-second-delay-is-need
 
 ## System Requirements
 
-- AutoCAD 2023
+- AutoCAD (tested on 2023, theoretically compatible with other versions)
 - .NET Framework 4.8
 - .NET 6.0 SDK (for CLI)
 - Windows PowerShell
@@ -147,7 +147,7 @@ See [Complete User Guide](docs/Complete_User_Guide.md#why-1-second-delay-is-need
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ### Dependencies
-- Requires AutoCAD 2023 (valid license required)
+- Requires AutoCAD (valid license required, tested on 2023)
 - Requires .NET Framework 4.8 and .NET 6.0 Runtime
 - Use of AutoCAD API is subject to Autodesk's terms and conditions
 
@@ -200,7 +200,7 @@ CAD_API 是一個使用 AutoCAD .NET API 開發的控制工具，透過文件監
 └─────────────────────┬───────────────────────────────┘
                       ↓
 ┌─────────────────────────────────────────────────────┐
-│              AutoCAD 2023                           │
+│                   AutoCAD                           │
 │            (執行繪圖命令)                            │
 └─────────────────────────────────────────────────────┘
 ```
@@ -208,7 +208,7 @@ CAD_API 是一個使用 AutoCAD .NET API 開發的控制工具，透過文件監
 ## 快速開始
 
 ### 1. 載入插件
-在 AutoCAD 2023 中：
+在 AutoCAD 中：
 ```
 NETLOAD
 ```
@@ -277,7 +277,7 @@ CAD_API_最小版本/
 **總大小**：約 1MB
 
 **執行需求**：
-- AutoCAD 2023
+- AutoCAD（已在 2023 測試，歡迎測試其他版本）
 - .NET 6.0 Runtime（[下載連結](https://dotnet.microsoft.com/download/dotnet/6.0)）
 - Windows PowerShell（內建）
 
@@ -291,7 +291,7 @@ CAD_API_最小版本/
 
 ## 環境需求
 
-- AutoCAD 2023
+- AutoCAD（已在 2023 測試，理論上相容其他版本）
 - .NET Framework 4.8
 - .NET 6.0 SDK（用於 CLI）
 - Windows PowerShell
@@ -303,13 +303,14 @@ CAD_API_最小版本/
 - **[build.md](docs/build.md)** - 使用 LLM 重現此專案的指南
 - **[docs/完整使用指南.md](docs/完整使用指南.md)** - 詳細使用說明（中文版）
 - **[docs/Complete_User_Guide.md](docs/Complete_User_Guide.md)** - Detailed usage guide (English)
+- **[docs/Under_Construction.md](docs/Under_Construction.md)** - 開發路線圖與未來功能規劃
 
 ## 許可證
 
 本專案採用 MIT 許可證 - 詳見 [LICENSE](LICENSE) 文件。
 
 ### 依賴項目
-- 需要 AutoCAD 2023（需要有效授權）
+- 需要 AutoCAD（需要有效授權，已在 2023 測試）
 - 需要 .NET Framework 4.8 和 .NET 6.0 Runtime
 - AutoCAD API 的使用需遵守 Autodesk 的條款
 
