@@ -106,20 +106,63 @@ DRAW LINE StartX,StartY Length Direction
 | Length | Line length, supports negative values for reverse | 2000 or -1500 |
 | Direction | HORIZONTAL (H) or VERTICAL (V) | HORIZONTAL or H |
 
+### Supported Drawing Commands
+
+| Command Type | Syntax | Description |
+|--------------|--------|-------------|
+| Line | `DRAW LINE StartX,StartY Length Direction` | Direction: HORIZONTAL/H or VERTICAL/V |
+| Circle | `DRAW CIRCLE CenterX,CenterY Radius` | Draw circle |
+| Arc | `DRAW ARC CenterX,CenterY Radius StartAngle EndAngle` | Angles in degrees |
+| Rectangle | `DRAW RECTANGLE Corner1X,Corner1Y Corner2X,Corner2Y` | Two diagonal corners |
+| Polyline | `DRAW POLYLINE Point1X,Point1Y Point2X,Point2Y ...` | At least two points |
+| Text | `DRAW TEXT X,Y Height "Text Content"` | Text must be in quotes |
+| Dimension | `DRAW DIMENSION Point1X,Point1Y Point2X,Point2Y` | Linear dimension |
+| Hatch | `DRAW HATCH Pattern Scale Angle` | Requires boundary selection first |
+
+### Selection Commands
+
+| Command | Syntax | Description |
+|---------|--------|-------------|
+| Select All | `SELECT ALL` | Select all objects |
+| Type Selection | `SELECT TYPE Type` | Types: LINE, CIRCLE, ARC, POLYLINE, TEXT, DIMENSION, HATCH |
+| Window Selection | `SELECT WINDOW Point1X,Point1Y Point2X,Point2Y` | Objects fully inside window |
+| Crossing Selection | `SELECT CROSSING Point1X,Point1Y Point2X,Point2Y` | Objects crossing window |
+| Point Selection | `SELECT POINT X,Y [Tolerance]` | Default tolerance is 10 units |
+| Layer Selection | `SELECT LAYER LayerName` | Select objects on specific layer |
+| Clear Selection | `SELECT CLEAR` | Clear current selection set |
+
+### Modification Commands
+
+| Command | Syntax | Description |
+|---------|--------|-------------|
+| Move | `MOVE Target OffsetX,OffsetY` | Target: LAST, SELECTED, ALL |
+| Copy | `COPY Target OffsetX,OffsetY [Count]` | Default copies 1 |
+| Rotate | `ROTATE Target BaseX,BaseY Angle` | Angle in degrees |
+| Scale | `SCALE Target BaseX,BaseY Factor` | Factor: 1.0 = original size |
+| Delete | `DELETE Target` | Delete specified objects |
+| Mirror | `MIRROR Target Point1X,Point1Y Point2X,Point2Y` | Two points define mirror axis |
+| Offset | `OFFSET Target Distance` | Offset outward by distance |
+| Trim | `TRIM BoundaryObject TrimPointX,TrimPointY` | Trim to boundary |
+| Extend | `EXTEND BoundaryObject ExtendPointX,ExtendPointY` | Extend to boundary |
+
 ### Command Examples
 
 ```bash
-# Basic lines
-DRAW LINE 0,0 2000 HORIZONTAL      # Draw 2000 units to the right from origin
-DRAW LINE 0,0 1500 VERTICAL        # Draw 1500 units up from origin
+# Basic drawing
+DRAW LINE 0,0 2000 HORIZONTAL      # Draw 2000 units to the right
+DRAW CIRCLE 1000,1000 500          # Draw circle at (1000,1000) radius 500
+DRAW RECTANGLE 0,0 2000,1500       # Draw rectangle
 
-# Using abbreviations
-DRAW LINE 100,100 1000 H           # Horizontal line
-DRAW LINE 200,200 1000 V           # Vertical line
+# Selection operations
+SELECT TYPE CIRCLE                 # Select all circles
+MOVE SELECTED 500,0                # Move selected circles right by 500
+SELECT WINDOW 0,0 2000,2000        # Window selection
+COPY SELECTED 0,1000 3             # Copy selected up by 1000, 3 copies
 
-# Reverse drawing (using negative values)
-DRAW LINE 500,500 -1000 HORIZONTAL # Draw 1000 units to the left
-DRAW LINE 500,500 -1000 VERTICAL   # Draw 1000 units down
+# Combined operations
+DRAW LINE 0,0 1000 H              # Draw line
+SELECT LAST                       # Select last drawn object
+ROTATE SELECTED 0,0 45            # Rotate 45 degrees
 
 # Drawing a square
 DRAW LINE 0,0 1000 HORIZONTAL      # Bottom edge
@@ -127,6 +170,13 @@ DRAW LINE 1000,0 1000 VERTICAL     # Right edge
 DRAW LINE 1000,1000 -1000 HORIZONTAL # Top edge
 DRAW LINE 0,1000 -1000 VERTICAL    # Left edge
 ```
+
+### Important Notes
+
+1. **Command Interval**: At least 1 second interval is required between commands to avoid command loss
+2. **Dimension Text Size**: The text size of DIMENSION command depends on AutoCAD's current dimension style (DIMSTYLE) settings and may need adjustment for proper display
+3. **Coordinate Format**: Coordinates must be comma-separated, e.g., `100,200`, spaces are not allowed
+4. **Text Parameters**: Text containing spaces in TEXT command must be enclosed in double quotes, e.g., `"Hello World"`
 
 ---
 

@@ -176,7 +176,7 @@ namespace CAD_API.Plugin
                 
                 // 使用現有的命令處理邏輯
                 var commands = new CADCommands();
-                var parseMethod = commands.GetType().GetMethod("ParseAndExecuteCommand", 
+                var parseMethod = commands.GetType().GetMethod("ParseAndExecuteExtendedCommand", 
                     System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                 
                 parseMethod?.Invoke(commands, new object[] { _pendingCommand, doc, db, ed });

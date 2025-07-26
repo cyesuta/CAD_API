@@ -36,7 +36,7 @@ namespace CAD_API.Plugin
             // 解析並執行命令
             try
             {
-                ParseAndExecuteCommand(pr.StringResult, doc, db, ed);
+                ParseAndExecuteExtendedCommand(pr.StringResult, doc, db, ed);
             }
             catch (System.Exception ex)
             {

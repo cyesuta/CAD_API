@@ -238,6 +238,35 @@
    - 統一 build.md 路徑指向 docs/build.md
    - 更新所有文檔引用
 
+### 2025-01-26 功能更新 - 選擇功能實現
+
+#### 新增選擇功能
+1. **選擇命令實現** (SelectionCommands.cs)
+   - SELECT ALL - 選擇所有物件
+   - SELECT TYPE [類型] - 按類型選擇（支援 LINE, CIRCLE, ARC, POLYLINE, TEXT, DIMENSION, HATCH）
+   - SELECT WINDOW 點1X,點1Y 點2X,點2Y - 窗口選擇
+   - SELECT CROSSING 點1X,點1Y 點2X,點2Y - 交叉窗口選擇  
+   - SELECT POINT X,Y [容差] - 點選擇（預設容差 10）
+   - SELECT LAYER 圖層名 - 按圖層選擇
+   - SELECT CLEAR - 清除選擇集
+
+2. **修改命令支援選擇集**
+   - MOVE SELECTED 偏移X,偏移Y - 移動選中的物件
+   - COPY SELECTED 偏移X,偏移Y [複製數量] - 複製選中的物件
+   - SCALE SELECTED 基點X,基點Y 比例因子 - 縮放選中的物件
+   - ROTATE SELECTED 基點X,基點Y 角度 - 旋轉選中的物件
+   - DELETE SELECTED - 刪除選中的物件
+
+3. **測試腳本新增**
+   - test_selection.ps1 - 完整測試選擇功能流程
+   - 包含繪製測試圖形、各種選擇方式測試、修改操作測試
+
+#### 技術實現細節
+1. 使用靜態 ObjectIdCollection 儲存當前選擇集
+2. 支援 LAST、SELECTED/SEL、ALL 作為目標物件指定
+3. 所有選擇操作都在 Transaction 中進行
+4. 選擇結果即時回饋給使用者
+
 ### 待解決問題
 1. 截圖功能已實現但圖像質量可優化
 2. 需要支援更多圖形類型（圓、弧、文字等）
